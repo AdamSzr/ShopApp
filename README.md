@@ -1,0 +1,2 @@
+# ShopApp
+Klient Serwer
