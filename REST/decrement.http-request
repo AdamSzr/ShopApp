@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "PUT",
+  "title": "decrement",
+  "url": "http://localhost:3000/api/product/decrement?id=2&count=5"
+}

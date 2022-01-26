@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "PUT",
+  "title": "increment",
+  "url": "http://localhost:3000/api/product/increment?id=2&count=5"
+}

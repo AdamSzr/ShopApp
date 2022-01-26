@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "ewoibmFtZSI6ICAic29tZXRoaW5rIiwKImRvbmUiOiAiYW55dGhpbmsiCn0=",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "POST",
+  "title": "create product request",
+  "url": "http://localhost:3000/api/product/create"
+}

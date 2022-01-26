@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "ewoibmFtZSI6ICAiYnVsa2kiLAoiY291bnQiOiAiMSIKfQ==",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "GET",
+  "title": "get products",
+  "url": "http://localhost:3000/api/products"
+}
