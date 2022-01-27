@@ -1,67 +1,50 @@
-# ShopApp
+# Opis Projektu:
+> Program składa się z 3 programów: Aplikacji sklepu, magazynu i api.
 
-docker images
-docker tag postgres:14.1 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/postgres-wallet:1.0
-docker images | grep wallet*
-docker login -u $(oc whoami) -p $(oc whoami -t) https://default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/postgres-wallet
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/postgres-wallet:1.0
+> Główny punkt to aplikacja api, która ma jako jedyna połączona jest z bazą danych. To ta aplikacja udosępnia REST Api, a klientami są aplikacja sklepu i magazynu.
 
-
-udostępniamy frontend za pomocą expose svc.
+> Projekt ma na celu pomóc synchronizować sklep z magazynem. Strona magazynu posiada specjalny widok w który umożliwia tworzenie nowego produktu i wyswietlaja wszystkie produkty, w raz z ich ilością. Przycisk "INCREMENT" zwiększa ilość dostępnych produktów.
+Strona sklepu posiada widok w którym wyświetlone są wszystkie produkty, w raz z ich ilością. Dostępny przycisk "DECREMENT" zmniejsza ilość dostępnych produktów.
 
 
+# Aplikacja Shop:
+### Hostuje pliki frontendu dla sklepu :
+   - lista produktów + ilość
+   - przycisk decrement
 
-docker images
+# Aplikacja Warehouse:
+### Hostuje pliki forntentu dla magazynu :
+   - lista produktów + ilość
+   - przycisk increment
 
-
-docker tag walletapp:1.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:1.0
-
-
-
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:1.0
-
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/postgres-wallet:1.0
-
-
-
-
-docker tag walletapp:3.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:3.0
-
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:3.0
-
-
-db-svc.labproj23.svc.cluster.local:5432
-
-kubectl exec -it bb-deploy -- sh
-
-
-
-oc expose svc projektappsvc --name projekt
-projekt-costam/apps.ocp.lab.cloudpak.site/labproj23/
+# Backend 
+1. Backend udostępnia REST Api z którego korzytają zarówno witryny sklep i magazyn
+2. ENDPOINTY:
+   - GET /api/products -> zwraca listę wszystkich produktów
+   - PUT /api/product/decrement?id=1&count=1 -> endpoint dla aplikacji sklepu, pozwala na zmniejszenie ilości produktów, np gdy klient dokonał zakupów
+    - PUT /api/product/increment?id=1&count=1 -> endpoint dla aplikacji magazynu, pozwala na zwiększenie ilości produktów, np gdy przyjechała dostawa
+    - POST /api/product/new -> endpoint dla magazynu, możemy dodać nowy produkt.
+    </br>
+    Przesyłamy poniższy objekt w request body
+    ```json
+    {
+       "name": "kawa rozpuszczalna inka",
+       "count": "5"
+    }
+    ```
 
 
-dbdeployment-5856789f6f-t6265
+# Baza Danych
+Baza danych posiada tylko 1 tabelę.
+### Tabela - Product 
+```
+{
+  "id": number,
+  "createdAt": date,
+  "updatedAt": date,
+  "product": string,
+  "count": number
+}
+```
 
 
-
-kkubectl exec -it dbdeployment-5856789f6f-t6265 -- psql -U postgres -d MonthWallet
-
-
--------------------- POSTGRES -------------------------
-\dt
-\l+
-
-
-
--------------------- DOCKER -------------------------
-
-
-docker tag shopapi:1.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/shopapi:1.0
-
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/shopapi:1.0
-
-
-docker tag warehouseapp:1.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:1.0
-
-docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:1.0
