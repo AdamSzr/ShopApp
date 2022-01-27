@@ -8,13 +8,14 @@ import { Box, Button, Select } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
 import CreateProduct from "app/core/components/CreateProduct"
 import { ProductsTableView } from "app/core/components/ProductsTableView"
+import { URL_ALL_PROD } from "app/config"
 /*
  * This file is just for a pleasant getting started page for your new app.
  * You can delete everything in here and start from scratch if you like.
  */
 
 const Home: BlitzPage = () => {
-  const URL_ALL_PROD = `http://localhost:3001/api/products`
+  // const URL_ALL_PROD = `http://localhost:3001/api/products`
 
   const [products, setProducts] = useState([] as Product[])
 

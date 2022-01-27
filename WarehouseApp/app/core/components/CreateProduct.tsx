@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react"
 import Product from "app/core/models/Product"
 import { useState } from "react"
+import { URL_CREATE_PRODUCT } from "app/config"
 
 type CreateProductProps = {
   onCreateSucces: (p: Product) => void
 }
 
 export const CreateProduct = (props: CreateProductProps) => {
-  const URL_CREATE_PRODUCT = `http://localhost:3001/api/product/new`
+  // const URL_CREATE_PRODUCT = `http://localhost:3001/api/product/new`
 
   const [name, setName] = useState("")
   const [count, setCount] = useState(1)

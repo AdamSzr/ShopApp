@@ -11,6 +11,7 @@ import {
 import Product from "app/core/models/Product"
 import { useState } from "react"
 import { RandomInt } from "../utils/base"
+import { URL_INCREMENT_PROD } from "app/config"
 
 type ProductsTableProp = {
   products: Product[]
@@ -23,7 +24,7 @@ type ProductRowProp = {
 }
 
 const ProductRow = (props: ProductRowProp) => {
-  const URL_INCREMENT_PROD = `http://localhost:3001/api/product/decrement`
+  // const URL_INCREMENT_PROD = `http://localhost:3001/api/product/decrement`
 
   const CreateUrl = (productId, count = 1) => `${URL_INCREMENT_PROD}?id=${productId}&${count}`
 
@@ -52,7 +53,7 @@ export const ProductsTableView = (props: ProductsTableProp) => {
       <Table variant="simple">
         <Tbody>
           {props.products.map((p) => (
-            <ProductRow product={p} onDecSuccess={props.onDecrementSucces} />
+            <ProductRow key={RandomInt(0, 999_999_999)} product={p} onDecSuccess={props.onDecrementSucces} />
           ))}
         </Tbody>
       </Table>

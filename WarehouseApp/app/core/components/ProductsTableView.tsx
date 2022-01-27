@@ -11,6 +11,7 @@ import {
 import Product from "app/core/models/Product"
 import { useState } from "react"
 import { RandomInt } from "../utils/base"
+import { URL_INCREMENT_PROD } from "app/config"
 
 type ProductsTableProp = {
   products: Product[]
@@ -23,7 +24,7 @@ type ProductRowProp = {
 }
 
 const ProductRow = (props: ProductRowProp) => {
-  const URL_INCREMENT_PROD = `http://localhost:3001/api/product/increment`
+  // const URL_INCREMENT_PROD = `http://localhost:3001/api/product/increment`
 
   const CreateUrl = (productId, count = 1) => `${URL_INCREMENT_PROD}?id=${productId}&${count}`
 
@@ -46,9 +47,7 @@ const ProductRow = (props: ProductRowProp) => {
 }
 
 export const ProductsTableView = (props: ProductsTableProp) => {
-  function handleIncremet() {
-    props.onIncrementSucces(new Product())
-  }
+ 
 
 
 
@@ -63,7 +62,7 @@ export const ProductsTableView = (props: ProductsTableProp) => {
         </Thead> */}
         <Tbody>
           {props.products.map((p) => (
-            <ProductRow product={p} onIncSuccess={props.onIncrementSucces} />
+            <ProductRow key={RandomInt(0, 999_999_999)} product={p} onIncSuccess={props.onIncrementSucces} />
           ))}
         </Tbody>
       </Table>

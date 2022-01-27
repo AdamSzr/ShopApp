@@ -4,6 +4,7 @@ import { z } from "zod"
 
 const CreateProduct = z.object({
   name: z.string(),
+  count: z.number(),
 })
 
 export default resolver.pipe(resolver.zod(CreateProduct), resolver.authorize(), async (input) => {
