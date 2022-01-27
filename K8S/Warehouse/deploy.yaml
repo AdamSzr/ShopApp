@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - command:
-        image: default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:2.0
+        image: default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:1.0
         name: warehouseapp
         resources: {}
         ports:
