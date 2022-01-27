@@ -60,3 +60,8 @@ kkubectl exec -it dbdeployment-5856789f6f-t6265 -- psql -U postgres -d MonthWall
 docker tag shopapi:1.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/shopapi:1.0
 
 docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/shopapi:1.0
+
+
+docker tag warehouseapp:1.0 default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:1.0
+
+docker push default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/warehouseapp:1.0
