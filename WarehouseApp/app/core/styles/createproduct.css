@@ -8,3 +8,7 @@
 #save_product_button{
        width: -webkit-fill-available;
 }
+
+td {
+text-align: center !important;
+}

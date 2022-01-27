@@ -7,6 +7,7 @@ import Product from "app/core/models/Product"
 import { Box, Button, Select } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
 import CreateProduct from "app/core/components/CreateProduct"
+import { ProductsTableView } from "app/core/components/ProductsTableView"
 /*
  * This file is just for a pleasant getting started page for your new app.
  * You can delete everything in here and start from scratch if you like.
@@ -14,9 +15,6 @@ import CreateProduct from "app/core/components/CreateProduct"
 
 const Home: BlitzPage = () => {
   const URL_ALL_PROD = `http://localhost:3001/api/products`
-  const URL_INCREMENT_PROD = `http://localhost:3001/api/product/increment`
-
-  const CreateUrl = (productId, count = 1) => `${URL_INCREMENT_PROD}?id=${productId}&${count}`
 
   const [products, setProducts] = useState([] as Product[])
 
@@ -38,8 +36,7 @@ const Home: BlitzPage = () => {
     }
   }
 
-  function addItemToProducts(product:Product)
-  {
+  function addItemToProducts(product: Product) {
     let arr = [...products, product]
     arr = sortProductByDate(arr)
     setProducts(arr)
@@ -49,31 +46,24 @@ const Home: BlitzPage = () => {
     return products.sort((p1, p2) => (p1.createdAt < p2.createdAt ? 1 : -1))
   }
 
-  function productItem(product) {
-    const onIncrement = () => {
-      fetch(CreateUrl(product.id), { method: "PUT" })
-        .then((r) => r.json())
-        .then((product) => Product.parse(product))
-        .then((p) => {
-          return [...products.filter((i) => i.id != p.id), p]
-        })
-        .then((arr) => setProducts(sortProductByDate(arr)))
-    }
-
-    return (
-      <Box key={RandomInt(0, 999_999_999)}>
-        {JSON.stringify(product, null, 4)} <Button onClick={onIncrement}> INCREMENT </Button>
-      </Box>
-    )
+  function handleInc(product:Product){
+    const newArr = [ product ,...products.filter(p => p.id != product.id) ]
+    setProducts(newArr)
   }
 
   return (
-    <FullScreen>
-      <Box>
-        <CreateProduct  onCreateSucces={(product)=>{addItemToProducts(product)} } />
-        <Box>{products.map((p) => productItem(p))}</Box>
-      </Box>
-    </FullScreen>
+    
+      <FullScreen>
+        <Box id="main_view">
+          <CreateProduct
+            onCreateSucces={(product) => {
+              addItemToProducts(product)
+            }}
+          />
+          <ProductsTableView  products={products} onIncrementSucces={handleInc}/>
+        </Box>
+      </FullScreen>
+  
   )
 }
 
