@@ -12,17 +12,19 @@ import "app/core/styles/main.css"
 
 import { ChakraProvider } from "@chakra-ui/react";
 
+
+
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
     <ChakraProvider>
-      <ErrorBoundary
-        FallbackComponent={RootErrorFallback}
-        onReset={useQueryErrorResetBoundary().reset}
-      >
-        {getLayout(<Component {...pageProps} />)}
-      </ErrorBoundary>
+          <ErrorBoundary
+            FallbackComponent={RootErrorFallback}
+            onReset={useQueryErrorResetBoundary().reset}
+          >
+            {getLayout(<Component {...pageProps} />)}
+          </ErrorBoundary>
     </ChakraProvider>
   );
 }

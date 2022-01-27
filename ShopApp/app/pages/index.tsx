@@ -1,11 +1,12 @@
 import { Suspense, useState } from "react"
 import { Image, Link, BlitzPage, useMutation, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import FullScreen from "app/core/components/FullScreen/FullScreen"
+import FullScreen from "app/core/components/FullScreen"
 import { GenerateRandomString, RandomInt } from "app/core/utils/base"
 import Product from "app/core/models/Product"
 import { Box, Button, Select } from "@chakra-ui/react"
-import { Input } from '@chakra-ui/react'
+import { Input } from "@chakra-ui/react"
+import { ProductsTableView } from "app/core/components/ProductsTableView"
 /*
  * This file is just for a pleasant getting started page for your new app.
  * You can delete everything in here and start from scratch if you like.
@@ -13,17 +14,14 @@ import { Input } from '@chakra-ui/react'
 
 const Home: BlitzPage = () => {
   const URL_ALL_PROD = `http://localhost:3001/api/products`
-  const URL_DECREMENT_PROD = `http://localhost:3001/api/product/decrement`
-
-  const CreateUrl = (productId, count = 1) => `${URL_DECREMENT_PROD}?id=${productId}&${count}`
 
   const [products, setProducts] = useState([] as Product[])
- 
+
   setup()
 
   function setup() {
     if (products.length > 0) {
-      return 1
+      return ""
     } else {
       try {
         fetch(URL_ALL_PROD)
@@ -36,38 +34,31 @@ const Home: BlitzPage = () => {
       }
     }
   }
+
+  function addItemToProducts(product: Product) {
+    let arr = [...products, product]
+    arr = sortProductByDate(arr)
+    setProducts(arr)
+  }
+
   function sortProductByDate(products: Product[]) {
     return products.sort((p1, p2) => (p1.createdAt < p2.createdAt ? 1 : -1))
   }
 
-  function productItem(product) {
- 
-
-    const onDecrement = () => {
-      fetch(CreateUrl(product.id), {method:"PUT"})
-        .then((r) => r.json())
-        .then((product) => Product.parse(product))
-        .then((p) => {
-          return [...products.filter((i) => i.id != p.id), p]
-        })
-        .then((arr) => setProducts(sortProductByDate(arr)))
-    }
-
-    return (
-      <Box key={RandomInt(0,999_999_999)}>
-        {JSON.stringify(product, null, 4)} <Button onClick={onDecrement}> decremetn</Button>
-      </Box>
-    )
+  function handleDec(product:Product){
+    const newArr = [ product ,...products.filter(p => p.id != product.id) ]
+    setProducts(newArr)
   }
 
-  function showProducts(products) {
-    return products.map((p) => productItem(p))
-  }
-
-  // fetch(URL_ALL_PROD).then(d=> d.json()).then(d=> setProducts(d))
-
-  console.log(products)
-  return <FullScreen>{showProducts(products)}</FullScreen>
+  return (
+    
+      <FullScreen>
+        <Box id="main_view">
+          <ProductsTableView  products={products} onDecrementSucces={handleDec}/>
+        </Box>
+      </FullScreen>
+  
+  )
 }
 
 Home.suppressFirstRenderFlicker = true
