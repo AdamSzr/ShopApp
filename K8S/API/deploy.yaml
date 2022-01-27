@@ -1,0 +1,86 @@
+
+---
+
+#### CONFIGMAP ###
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apicm
+data:
+  DATABASE_URL: postgresql://postgres:admin@dbsvc.labproj23.svc.cluster.local:5432/ShopApi
+  SESSION_SECRET_KEY: 96e111f6e3cba454c8615eafc5650205
+---
+
+#### DEPLOYMENT ###
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: projektapi
+  name: projektapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projektapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: projektapi
+    spec:
+      containers:
+      - command:
+        image: default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:2.0
+        name: projektapi
+        resources: {}
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: apicm
+status: {}
+
+---
+
+#### SERVICE ###
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: projektapisvc
+  labels:
+    app: projektapi
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: projektapi
+  type: ClusterIP
+
+---
+
+#### ROUTE ###
+
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: projektapi
+  name: apirte
+spec:
+  host: ""
+  port:
+    targetPort: 3000
+  to:
+    kind: Service
+    name: projektapisvc
+    weight: 100
