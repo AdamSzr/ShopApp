@@ -1,0 +1,70 @@
+
+#### DEPLOYMENT ###
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: projektshopapp
+  name: shopapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shopapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: shopapp
+    spec:
+      containers:
+      - command:
+        image: default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/labproj23/walletapp:2.0
+        name: shopapp
+        resources: {}
+        ports:
+        - containerPort: 3000
+status: {}
+
+---
+
+#### SERVICE ###
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: projektshopappsvc
+  labels:
+    app: projektshopapp
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: shopapp
+  type: ClusterIP
+
+---
+
+#### ROUTE ###
+
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: projektshopapp
+  name: shoprte
+spec:
+  host: ""
+  port:
+    targetPort: 3000
+  to:
+    kind: Service
+    name: projektshopappsvc
+    weight: 100

@@ -1,0 +1,2 @@
+oc login -u labuser23 -p b46d6b6939dd3f https://api.ocp.lab.cloudpak.site:6443 &&
+docker login -u $(oc whoami) -p $(oc whoami -t) https://default-route-openshift-image-registry.apps.ocp.lab.cloudpak.site/
